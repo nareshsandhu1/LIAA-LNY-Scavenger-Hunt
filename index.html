@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lunar New Year 2026 — Year of the Horse Scavenger Hunt</title>
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --card: #111827;
+      --muted: #94a3b8;
+      --text: #e5e7eb;
+      --accent: #f59e0b;
+      --ring: rgba(245, 158, 11, .35);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: radial-gradient(1000px 600px at 20% 0%, rgba(239, 68, 68, .25), transparent 60%),
+                  radial-gradient(800px 500px at 80% 0%, rgba(245, 158, 11, .18), transparent 60%),
+                  var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+    .wrap { width: 100%; max-width: 760px; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 10px 14px;
+      border: 1px solid rgba(148,163,184,.22);
+      border-radius: 999px;
+      background: rgba(17,24,39,.55);
+      backdrop-filter: blur(10px);
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .badge b { color: var(--text); font-weight: 650; }
+    .card {
+      margin-top: 14px;
+      background: rgba(17,24,39,.70);
+      border: 1px solid rgba(148,163,184,.22);
+      border-radius: 20px;
+      padding: 22px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.35);
+      backdrop-filter: blur(12px);
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      background: linear-gradient(135deg, rgba(239,68,68,.24), rgba(245,158,11,.20), rgba(239,68,68,.10));
+      filter: blur(24px);
+      opacity: .7;
+      z-index: 0;
+    }
+    .inner { position: relative; z-index: 1; }
+    h1 { margin: 6px 0 0; font-size: 26px; line-height: 1.2; letter-spacing: -0.02em; }
+    h2 { margin: 12px 0 8px; font-size: 22px; line-height: 1.25; letter-spacing: -0.01em; }
+    p { margin: 0 0 10px; font-size: 16px; line-height: 1.55; }
+    .muted { color: var(--muted); }
+    .pillrow { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 12px; }
+    .pill {
+      border: 1px solid rgba(148,163,184,.22);
+      background: rgba(2,6,23,.35);
+      color: var(--text);
+      padding: 8px 10px;
+      border-radius: 999px;
+      font-size: 13px;
+    }
+    .proof {
+      margin-top: 10px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(245,158,11,.32);
+      box-shadow: 0 0 0 6px var(--ring);
+      background: rgba(245,158,11,.10);
+    }
+    .nav { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+    a.btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 11px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(148,163,184,.22);
+      background: rgba(2,6,23,.40);
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    a.btn:hover { border-color: rgba(245,158,11,.45); }
+    .btn.primary {
+      background: linear-gradient(135deg, rgba(239,68,68,.35), rgba(245,158,11,.25));
+      border-color: rgba(245,158,11,.35);
+    }
+    .footer { margin-top: 14px; font-size: 13px; color: rgba(148,163,184,.9); }
+    .small { font-size: 13px; color: rgba(148,163,184,.9); }
+    code {
+      background: rgba(2,6,23,.45);
+      border: 1px solid rgba(148,163,184,.18);
+      padding: 2px 6px;
+      border-radius: 8px;
+      color: #e2e8f0;
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="badge">🏮 <b>Lunar New Year 2026</b> — Year of the Horse Scavenger Hunt</div>
+
+    <section class="card">
+      <div class="inner">
+        <h1 id="title">Ready to run? 🐎</h1>
+        <p class="muted" id="subtitle">Scan QR 01 to start — or add <code>?step=1</code> to the URL.</p>
+
+        <div id="content" style="display:none;">
+          <h2 id="clueTitle"></h2>
+          <p id="clueText"></p>
+
+          <div class="pillrow" id="examples"></div>
+
+          <div class="proof" id="proofBox" style="display:none;">
+            <p class="small"><b>Proof:</b> <span id="proofText"></span></p>
+          </div>
+
+          <div class="nav">
+            <a class="btn" id="prevBtn" href="#">← Previous</a>
+            <a class="btn primary" id="homeBtn" href="./">Start / Home</a>
+            <a class="btn" id="nextBtn" href="#">Next →</a>
+          </div>
+
+          <p class="footer" id="footer"></p>
+        </div>
+
+        <div class="footer">
+          Tip for hosts: QR codes should point to <code>?step=1</code> … <code>?step=12</code>.
+        </div>
+      </div>
+    </section>
+  </main>
+
+<script>
+  const qs = new URLSearchParams(location.search);
+  const stepParam = qs.get('step') || (location.hash.startsWith('#step=') ? location.hash.replace('#step=','') : '');
+  const step = parseInt(stepParam, 10);
+
+  function setLink(el, stepVal) {
+    if (!el) return;
+    el.href = stepVal ? `?step=${stepVal}` : `./`;
+  }
+
+  async function main() {
+    const res = await fetch('./clues.json');
+    const clues = await res.json();
+
+    const title = document.getElementById('title');
+    const subtitle = document.getElementById('subtitle');
+    const content = document.getElementById('content');
+
+    if (!step || step < 1 || step > clues.length) {
+      // keep home state
+      return;
+    }
+
+    const clue = clues[step - 1];
+
+    document.getElementById('clueTitle').textContent = `Step ${clue.id} of ${clues.length} — ${clue.title}`;
+    document.getElementById('clueText').textContent = clue.text;
+
+    // examples
+    const exWrap = document.getElementById('examples');
+    exWrap.innerHTML = "";
+    (clue.examples || []).forEach(e => {
+      const pill = document.createElement('div');
+      pill.className = "pill";
+      pill.textContent = e;
+      exWrap.appendChild(pill);
+    });
+
+    // proof
+    const proofBox = document.getElementById('proofBox');
+    const proofText = document.getElementById('proofText');
+    if (clue.proof && clue.proof.trim().length) {
+      proofBox.style.display = "block";
+      proofText.textContent = clue.proof;
+    } else {
+      proofBox.style.display = "none";
+    }
+
+    // nav
+    const prev = step > 1 ? step - 1 : 1;
+    const next = step < clues.length ? step + 1 : clues.length;
+
+    setLink(document.getElementById('prevBtn'), prev);
+    setLink(document.getElementById('nextBtn'), next);
+
+    // header
+    title.textContent = "Clue unlocked ✅";
+    subtitle.textContent = "Don’t overthink it — keep it fun.";
+
+    content.style.display = "block";
+
+    const footer = document.getElementById('footer');
+    footer.textContent = step === clues.length
+      ? "🎉 Gong Xi Fa Cai! Head to the celebration spot."
+      : "Find the next QR code and scan it to continue.";
+  }
+
+  main().catch(err => {
+    document.getElementById('title').textContent = "Couldn’t load clues";
+    document.getElementById('subtitle').textContent = "Host note: ensure clues.json sits next to index.html.";
+    console.error(err);
+  });
+</script>
+</body>
+</html>

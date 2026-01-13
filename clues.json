@@ -1,0 +1,130 @@
+[
+  {
+    "id": 1,
+    "title": "Swift as a Horse 🐎",
+    "text": "Find something in the office that represents speed.",
+    "examples": [
+      "Printer",
+      "Fast-charging station",
+      "Running shoes"
+    ],
+    "proof": "Take a photo."
+  },
+  {
+    "id": 2,
+    "title": "Lucky Red 🧧",
+    "text": "Locate something red that could bring Lunar New Year luck.",
+    "examples": [
+      "Red mug",
+      "Red notebook",
+      "Red badge lanyard"
+    ],
+    "proof": "Take a photo."
+  },
+  {
+    "id": 3,
+    "title": "Horsepower in Action ⚡",
+    "text": "Find an item that uses power or energy — just like a strong Horse year.",
+    "examples": [
+      "Monitor",
+      "Laptop charger",
+      "Kettle"
+    ],
+    "proof": "Take a photo."
+  },
+  {
+    "id": 4,
+    "title": "The 2026 Kickstart 🎯",
+    "text": "Find a colleague who has set a 2026 goal. Capture ONE word that describes it.",
+    "examples": [
+      "Growth",
+      "Focus",
+      "Balance"
+    ],
+    "proof": "Typed word or chat screenshot."
+  },
+  {
+    "id": 5,
+    "title": "Golden Fortune ✨",
+    "text": "Find something gold that symbolises prosperity in the New Year.",
+    "examples": [
+      "Pen",
+      "Decor item",
+      "Wrapper",
+      "Jewellery"
+    ],
+    "proof": "Take a photo."
+  },
+  {
+    "id": 6,
+    "title": "Horse Trail Riddle 🐾",
+    "text": "Find a place in the office where people ‘gallop’ through constantly (a high-traffic spot).",
+    "examples": [
+      "Reception",
+      "Lifts",
+      "Kitchen"
+    ],
+    "proof": "Take a photo."
+  },
+  {
+    "id": 7,
+    "title": "The Stable 🧠",
+    "text": "Identify an area where people ‘park’ for focus — like a stable for their mind.",
+    "examples": [
+      "Focus booth",
+      "Quiet room"
+    ],
+    "proof": "Take a photo."
+  },
+  {
+    "id": 8,
+    "title": "The Feast Find 🍊",
+    "text": "Spot something connected to food or sharing, symbolising abundance.",
+    "examples": [
+      "Snack drawer",
+      "Fruit bowl",
+      "Tea station"
+    ],
+    "proof": "Take a photo."
+  },
+  {
+    "id": 9,
+    "title": "A Strong Start 🐴",
+    "text": "Find a colleague whose name begins with H (for Horse).",
+    "examples": [
+      "Write their name down (selfie optional)"
+    ],
+    "proof": "Write the name (selfie optional)."
+  },
+  {
+    "id": 10,
+    "title": "Final Gallop Challenge 📸",
+    "text": "Find a spot in the office that would make a great place for a ‘victory photo’.",
+    "examples": [
+      "Branded wall",
+      "Office view",
+      "Lounge corner"
+    ],
+    "proof": "Group photo."
+  },
+  {
+    "id": 11,
+    "title": "Fortune Reflection 🌕",
+    "text": "In the Year of the Horse, momentum matters. Share ONE word that represents what you want more of in 2026.",
+    "examples": [
+      "Confidence",
+      "Health",
+      "Adventure"
+    ],
+    "proof": "Just for fun — no wrong answers."
+  },
+  {
+    "id": 12,
+    "title": "Gong Xi Fa Cai 🎉",
+    "text": "The Horse’s journey ends here. Head to the final gathering spot to celebrate Lunar New Year together.",
+    "examples": [
+      "No task — just food, fortune, and fun 🧧"
+    ],
+    "proof": ""
+  }
+]
