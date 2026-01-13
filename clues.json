@@ -8,7 +8,8 @@
       "Fast-charging station",
       "Running shoes"
     ],
-    "proof": "Take a photo."
+    "proof": "Take a photo.",
+    "art": "horse"
   },
   {
     "id": 2,
@@ -19,7 +20,8 @@
       "Red notebook",
       "Red badge lanyard"
     ],
-    "proof": "Take a photo."
+    "proof": "Take a photo.",
+    "art": "hongbao"
   },
   {
     "id": 3,
@@ -30,7 +32,8 @@
       "Laptop charger",
       "Kettle"
     ],
-    "proof": "Take a photo."
+    "proof": "Take a photo.",
+    "art": "firecracker"
   },
   {
     "id": 4,
@@ -41,7 +44,8 @@
       "Focus",
       "Balance"
     ],
-    "proof": "Typed word or chat screenshot."
+    "proof": "Typed word or chat screenshot.",
+    "art": "lantern"
   },
   {
     "id": 5,
@@ -53,7 +57,8 @@
       "Wrapper",
       "Jewellery"
     ],
-    "proof": "Take a photo."
+    "proof": "Take a photo.",
+    "art": "gold"
   },
   {
     "id": 6,
@@ -64,7 +69,8 @@
       "Lifts",
       "Kitchen"
     ],
-    "proof": "Take a photo."
+    "proof": "Take a photo.",
+    "art": "knot"
   },
   {
     "id": 7,
@@ -74,7 +80,8 @@
       "Focus booth",
       "Quiet room"
     ],
-    "proof": "Take a photo."
+    "proof": "Take a photo.",
+    "art": "plum"
   },
   {
     "id": 8,
@@ -85,7 +92,8 @@
       "Fruit bowl",
       "Tea station"
     ],
-    "proof": "Take a photo."
+    "proof": "Take a photo.",
+    "art": "mandarin"
   },
   {
     "id": 9,
@@ -94,7 +102,8 @@
     "examples": [
       "Write their name down (selfie optional)"
     ],
-    "proof": "Write the name (selfie optional)."
+    "proof": "Write the name (selfie optional).",
+    "art": "mahjong"
   },
   {
     "id": 10,
@@ -105,7 +114,8 @@
       "Office view",
       "Lounge corner"
     ],
-    "proof": "Group photo."
+    "proof": "Group photo.",
+    "art": "dragon"
   },
   {
     "id": 11,
@@ -116,7 +126,8 @@
       "Health",
       "Adventure"
     ],
-    "proof": "Just for fun — no wrong answers."
+    "proof": "Just for fun — no wrong answers.",
+    "art": "moon"
   },
   {
     "id": 12,
@@ -125,6 +136,7 @@
     "examples": [
       "No task — just food, fortune, and fun 🧧"
     ],
-    "proof": ""
+    "proof": "",
+    "art": "celebrate"
   }
 ]

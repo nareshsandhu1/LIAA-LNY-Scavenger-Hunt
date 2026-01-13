@@ -4,33 +4,48 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Lunar New Year 2026 — Year of the Horse Scavenger Hunt</title>
+  <meta name="theme-color" content="#0b0f14">
   <style>
     :root {
       --bg: #0b0f14;
-      --card: #111827;
+      --card: rgba(17,24,39,.70);
       --muted: #94a3b8;
       --text: #e5e7eb;
-      --accent: #f59e0b;
       --ring: rgba(245, 158, 11, .35);
+      --line: rgba(148,163,184,.22);
+      --gold: #f59e0b;
+      --red: #ef4444;
     }
     * { box-sizing: border-box; }
     body {
       margin: 0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-      background: radial-gradient(1000px 600px at 20% 0%, rgba(239, 68, 68, .25), transparent 60%),
-                  radial-gradient(800px 500px at 80% 0%, rgba(245, 158, 11, .18), transparent 60%),
-                  var(--bg);
+      background:
+        radial-gradient(1000px 650px at 20% 0%, rgba(239, 68, 68, .22), transparent 60%),
+        radial-gradient(900px 520px at 80% 0%, rgba(245, 158, 11, .18), transparent 60%),
+        radial-gradient(900px 520px at 50% 120%, rgba(245, 158, 11, .10), transparent 55%),
+        var(--bg);
       color: var(--text);
       min-height: 100vh;
       display: grid;
       place-items: center;
-      padding: 24px;
+      padding: 22px;
+      overflow-x: hidden;
     }
-    .wrap { width: 100%; max-width: 760px; }
+    .wrap { width: 100%; max-width: 820px; }
+    .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
     .badge {
-      display: inline-flex; align-items: center; gap: 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
       padding: 10px 14px;
-      border: 1px solid rgba(148,163,184,.22);
+      border: 1px solid var(--line);
       border-radius: 999px;
       background: rgba(17,24,39,.55);
       backdrop-filter: blur(10px);
@@ -38,34 +53,70 @@
       font-size: 14px;
     }
     .badge b { color: var(--text); font-weight: 650; }
+    .progress {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(2,6,23,.35);
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .progress b { color: var(--text); }
     .card {
       margin-top: 14px;
-      background: rgba(17,24,39,.70);
-      border: 1px solid rgba(148,163,184,.22);
-      border-radius: 20px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 22px;
       padding: 22px;
-      box-shadow: 0 20px 60px rgba(0,0,0,.35);
+      box-shadow: 0 20px 70px rgba(0,0,0,.38);
       backdrop-filter: blur(12px);
       position: relative;
       overflow: hidden;
+      touch-action: pan-y;
     }
     .card::before {
       content: "";
       position: absolute;
       inset: -2px;
-      background: linear-gradient(135deg, rgba(239,68,68,.24), rgba(245,158,11,.20), rgba(239,68,68,.10));
-      filter: blur(24px);
-      opacity: .7;
+      background: linear-gradient(135deg, rgba(239,68,68,.22), rgba(245,158,11,.18), rgba(239,68,68,.10));
+      filter: blur(26px);
+      opacity: .8;
       z-index: 0;
     }
     .inner { position: relative; z-index: 1; }
     h1 { margin: 6px 0 0; font-size: 26px; line-height: 1.2; letter-spacing: -0.02em; }
-    h2 { margin: 12px 0 8px; font-size: 22px; line-height: 1.25; letter-spacing: -0.01em; }
+    h2 { margin: 10px 0 8px; font-size: 22px; line-height: 1.25; letter-spacing: -0.01em; }
     p { margin: 0 0 10px; font-size: 16px; line-height: 1.55; }
     .muted { color: var(--muted); }
+    .grid {
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+    @media (max-width: 720px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+    .art {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(2,6,23,.35);
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+    }
+    .art .cap {
+      padding: 10px 12px;
+      border-top: 1px solid var(--line);
+      font-size: 12px;
+      color: rgba(148,163,184,.95);
+    }
+    .art svg { display: block; width: 100%; height: auto; }
     .pillrow { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 12px; }
     .pill {
-      border: 1px solid rgba(148,163,184,.22);
+      border: 1px solid var(--line);
       background: rgba(2,6,23,.35);
       color: var(--text);
       padding: 8px 10px;
@@ -81,18 +132,22 @@
       background: rgba(245,158,11,.10);
     }
     .nav { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
-    a.btn {
-      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    a.btn, button.btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
       padding: 11px 14px;
       border-radius: 14px;
-      border: 1px solid rgba(148,163,184,.22);
+      border: 1px solid var(--line);
       background: rgba(2,6,23,.40);
       color: var(--text);
       text-decoration: none;
-      font-weight: 600;
+      font-weight: 650;
       font-size: 14px;
+      cursor: pointer;
     }
-    a.btn:hover { border-color: rgba(245,158,11,.45); }
+    a.btn:hover, button.btn:hover { border-color: rgba(245,158,11,.45); }
     .btn.primary {
       background: linear-gradient(135deg, rgba(239,68,68,.35), rgba(245,158,11,.25));
       border-color: rgba(245,158,11,.35);
@@ -106,38 +161,74 @@
       border-radius: 8px;
       color: #e2e8f0;
     }
+    .lockbox {
+      margin-top: 10px;
+      padding: 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(239,68,68,.35);
+      background: rgba(239,68,68,.10);
+    }
+    .hint {
+      border: 1px dashed rgba(148,163,184,.35);
+      padding: 10px 12px;
+      border-radius: 14px;
+      color: rgba(148,163,184,.95);
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
   <main class="wrap">
-    <div class="badge">🏮 <b>Lunar New Year 2026</b> — Year of the Horse Scavenger Hunt</div>
+    <div class="top">
+      <div class="badge">🏮 <b>Lunar New Year 2026</b> — Year of the Horse Scavenger Hunt</div>
+      <div class="progress" id="progressPill">Unlocked: <b id="unlockedCount">0</b>/12</div>
+    </div>
 
-    <section class="card">
+    <section class="card" id="swipeArea" aria-label="Clue card. Swipe left/right to navigate.">
       <div class="inner">
         <h1 id="title">Ready to run? 🐎</h1>
-        <p class="muted" id="subtitle">Scan QR 01 to start — or add <code>?step=1</code> to the URL.</p>
+        <p class="muted" id="subtitle">Scan QR 01 to start — or open <code>?step=1&k=...</code></p>
 
         <div id="content" style="display:none;">
-          <h2 id="clueTitle"></h2>
-          <p id="clueText"></p>
+          <div class="grid">
+            <div class="art" id="artBox" aria-hidden="true"></div>
 
-          <div class="pillrow" id="examples"></div>
+            <div>
+              <h2 id="clueTitle"></h2>
+              <p id="clueText"></p>
 
-          <div class="proof" id="proofBox" style="display:none;">
-            <p class="small"><b>Proof:</b> <span id="proofText"></span></p>
+              <div class="pillrow" id="examples"></div>
+
+              <div class="proof" id="proofBox" style="display:none;">
+                <p class="small"><b>Proof:</b> <span id="proofText"></span></p>
+              </div>
+
+              <div class="nav">
+                <a class="btn" id="prevBtn" href="#">← Previous</a>
+                <a class="btn primary" id="homeBtn" href="./">Start / Home</a>
+                <a class="btn" id="nextBtn" href="#">Next →</a>
+              </div>
+
+              <div class="hint">Tip: You can <b>swipe</b> left/right on this card to move between clues you’ve unlocked.</div>
+
+              <p class="footer" id="footer"></p>
+            </div>
           </div>
+        </div>
 
+        <div id="locked" style="display:none;">
+          <div class="lockbox">
+            <p><b>🔒 This step is locked.</b></p>
+            <p class="muted">To unlock it, you need to scan the correct QR code for this step.</p>
+            <p class="small">If you’re hosting: each QR should include <code>?step=N&k=TOKEN</code> (token is unique per step).</p>
+          </div>
           <div class="nav">
-            <a class="btn" id="prevBtn" href="#">← Previous</a>
-            <a class="btn primary" id="homeBtn" href="./">Start / Home</a>
-            <a class="btn" id="nextBtn" href="#">Next →</a>
+            <a class="btn primary" id="goUnlockedBtn" href="./">Go to last unlocked</a>
           </div>
-
-          <p class="footer" id="footer"></p>
         </div>
 
         <div class="footer">
-          Tip for hosts: QR codes should point to <code>?step=1</code> … <code>?step=12</code>.
+          Host note: Step locking is enabled. Don’t share tokens publicly unless you want people to skip ahead.
         </div>
       </div>
     </section>
@@ -145,31 +236,246 @@
 
 <script>
   const qs = new URLSearchParams(location.search);
-  const stepParam = qs.get('step') || (location.hash.startsWith('#step=') ? location.hash.replace('#step=','') : '');
-  const step = parseInt(stepParam, 10);
+  const stepParam = qs.get('step');
+  const tokenParam = qs.get('k');
+  const step = stepParam ? parseInt(stepParam, 10) : null;
 
-  function setLink(el, stepVal) {
+  const STORAGE_KEY = "lny_horse_hunt_unlocked_v1";
+
+  function getUnlocked() {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    const n = raw ? parseInt(raw, 10) : 0;
+    return Number.isFinite(n) ? Math.max(0, Math.min(12, n)) : 0;
+  }
+  function setUnlocked(n) {
+    localStorage.setItem(STORAGE_KEY, String(Math.max(0, Math.min(12, n))));
+  }
+
+  function setLink(el, stepVal, token) {
     if (!el) return;
-    el.href = stepVal ? `?step=${stepVal}` : `./`;
+    if (!stepVal) { el.href = `./`; return; }
+    el.href = token ? `?step=${stepVal}&k=${encodeURIComponent(token)}` : `?step=${stepVal}`;
+  }
+
+  function artSvg(kind) {
+    // Lightweight inline "pics" (SVG illustrations) so no external image hosting is needed.
+    const common = (inner) => `
+      <svg viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${kind} illustration">
+        <defs>
+          <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="rgba(239,68,68,.55)"/>
+            <stop offset="1" stop-color="rgba(245,158,11,.45)"/>
+          </linearGradient>
+          <filter id="s" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="rgba(0,0,0,.35)"/>
+          </filter>
+        </defs>
+        <rect x="0" y="0" width="400" height="260" fill="rgba(2,6,23,.35)"/>
+        <circle cx="320" cy="60" r="70" fill="url(#g)" opacity=".7"/>
+        <circle cx="80" cy="210" r="90" fill="url(#g)" opacity=".35"/>
+        ${inner}
+      </svg>`;
+
+    const svgs = {
+      horse: common(`
+        <path d="M128 170c22-45 62-78 118-88 28-5 48-2 66 7l-20 22c-13-5-30-5-49-1-42 9-73 32-90 61l-25-1z" fill="rgba(245,158,11,.55)" filter="url(#s)"/>
+        <path d="M155 170c10 26 29 46 64 52 28 5 56 0 78-12l-9-20c-19 9-40 12-62 8-22-4-33-15-41-28h-30z" fill="rgba(239,68,68,.45)"/>
+        <path d="M268 84l34-36 22 20-28 40-28-24z" fill="rgba(148,163,184,.35)"/>
+        <text x="22" y="44" font-size="18" fill="rgba(229,231,235,.9)">Year of the Horse</text>
+      `),
+      hongbao: common(`
+        <rect x="108" y="70" width="184" height="140" rx="18" fill="rgba(239,68,68,.55)" filter="url(#s)"/>
+        <rect x="108" y="120" width="184" height="12" fill="rgba(245,158,11,.65)"/>
+        <circle cx="200" cy="140" r="26" fill="rgba(245,158,11,.70)"/>
+        <text x="186" y="147" font-size="18" fill="rgba(2,6,23,.9)">福</text>
+        <text x="22" y="44" font-size="18" fill="rgba(229,231,235,.9)">Lucky Red Envelope</text>
+      `),
+      firecracker: common(`
+        <rect x="120" y="86" width="160" height="90" rx="16" fill="rgba(245,158,11,.55)" filter="url(#s)"/>
+        <path d="M280 104c22-10 46-6 60 10-18 4-33 15-40 30 2-16-6-30-20-40z" fill="rgba(239,68,68,.55)"/>
+        <path d="M150 176l20 36 24-26-44-10z" fill="rgba(239,68,68,.40)"/>
+        <text x="22" y="44" font-size="18" fill="rgba(229,231,235,.9)">Firecracker Energy</text>
+      `),
+      lantern: common(`
+        <circle cx="200" cy="120" r="62" fill="rgba(239,68,68,.55)" filter="url(#s)"/>
+        <rect x="168" y="62" width="64" height="16" rx="8" fill="rgba(245,158,11,.65)"/>
+        <rect x="168" y="182" width="64" height="12" rx="6" fill="rgba(245,158,11,.65)"/>
+        <path d="M200 194v30" stroke="rgba(245,158,11,.75)" stroke-width="4"/>
+        <text x="22" y="44" font-size="18" fill="rgba(229,231,235,.9)">Lantern Light</text>
+      `),
+      gold: common(`
+        <path d="M140 190c0-60 30-110 60-110s60 50 60 110" fill="rgba(245,158,11,.55)" filter="url(#s)"/>
+        <circle cx="200" cy="125" r="28" fill="rgba(245,158,11,.75)"/>
+        <text x="188" y="132" font-size="16" fill="rgba(2,6,23,.9)">金</text>
+        <text x="22" y="44" font-size="18" fill="rgba(229,231,235,.9)">Golden Fortune</text>
+      `),
+      knot: common(`
+        <path d="M200 70c20 20 20 40 0 60-20-20-20-40 0-60z" fill="rgba(239,68,68,.55)" filter="url(#s)"/>
+        <path d="M200 130c40 0 60 22 60 44s-20 44-60 44-60-22-60-44 20-44 60-44z" fill="rgba(245,158,11,.30)"/>
+        <path d="M200 174v54" stroke="rgba(239,68,68,.55)" stroke-width="6"/>
+        <text x="22" y="44" font-size="18" fill="rgba(229,231,235,.9)">Good Luck Knot</text>
+      `),
+      plum: common(`
+        <path d="M120 190c40-70 80-110 140-120" stroke="rgba(148,163,184,.45)" stroke-width="6" fill="none"/>
+        <circle cx="248" cy="92" r="12" fill="rgba(239,68,68,.55)"/>
+        <circle cx="220" cy="110" r="10" fill="rgba(245,158,11,.45)"/>
+        <circle cx="190" cy="130" r="11" fill="rgba(239,68,68,.45)"/>
+        <circle cx="160" cy="160" r="9" fill="rgba(245,158,11,.35)"/>
+        <text x="22" y="44" font-size="18" fill="rgba(229,231,235,.9)">Plum Blossom</text>
+      `),
+      mandarin: common(`
+        <circle cx="200" cy="140" r="64" fill="rgba(245,158,11,.55)" filter="url(#s)"/>
+        <path d="M190 74c18-12 36-10 48 6-22 0-36 8-48 18 2-10 0-18 0-24z" fill="rgba(34,197,94,.35)"/>
+        <text x="22" y="44" font-size="18" fill="rgba(229,231,235,.9)">Mandarin Fortune</text>
+      `),
+      mahjong: common(`
+        <rect x="128" y="78" width="144" height="160" rx="16" fill="rgba(229,231,235,.08)" stroke="rgba(148,163,184,.28)" filter="url(#s)"/>
+        <text x="190" y="150" font-size="44" fill="rgba(239,68,68,.65)">中</text>
+        <text x="22" y="44" font-size="18" fill="rgba(229,231,235,.9)">Mahjong Luck</text>
+      `),
+      dragon: common(`
+        <path d="M90 160c40-70 90-90 160-70 30 9 52 28 66 54-30-16-54-18-76-10-18 7-30 22-46 34-26 20-60 22-104-8z"
+              fill="rgba(239,68,68,.45)" filter="url(#s)"/>
+        <circle cx="275" cy="120" r="7" fill="rgba(2,6,23,.9)"/>
+        <text x="22" y="44" font-size="18" fill="rgba(229,231,235,.9)">Dragon Spirit</text>
+      `),
+      moon: common(`
+        <circle cx="250" cy="120" r="70" fill="rgba(229,231,235,.18)" filter="url(#s)"/>
+        <circle cx="270" cy="110" r="70" fill="rgba(2,6,23,.40)"/>
+        <text x="22" y="44" font-size="18" fill="rgba(229,231,235,.9)">Reunion Moon</text>
+      `),
+      celebrate: common(`
+        <path d="M120 180c20-60 50-90 80-90s60 30 80 90" fill="rgba(245,158,11,.35)" filter="url(#s)"/>
+        <path d="M120 180h160v16c0 18-14 32-32 32H152c-18 0-32-14-32-32v-16z" fill="rgba(239,68,68,.45)"/>
+        <circle cx="130" cy="70" r="10" fill="rgba(245,158,11,.70)"/>
+        <circle cx="170" cy="54" r="7" fill="rgba(239,68,68,.70)"/>
+        <circle cx="230" cy="62" r="8" fill="rgba(245,158,11,.55)"/>
+        <circle cx="270" cy="46" r="6" fill="rgba(239,68,68,.55)"/>
+        <text x="22" y="44" font-size="18" fill="rgba(229,231,235,.9)">Celebrate!</text>
+      `),
+    };
+    return svgs[kind] || svgs.lantern;
+  }
+
+  function updateProgressPill() {
+    const unlocked = getUnlocked();
+    document.getElementById('unlockedCount').textContent = unlocked;
+  }
+
+  function goToStep(n) {
+    const unlocked = getUnlocked();
+    const target = Math.max(1, Math.min(12, n));
+    const allowed = Math.min(target, unlocked || 1);
+    location.href = allowed === 0 ? "./" : `?step=${allowed}`;
+  }
+
+  // Swipe gestures (left=next, right=prev) for unlocked steps
+  function enableSwipe(currentStep, maxStepUnlocked) {
+    const el = document.getElementById('swipeArea');
+    let sx = 0, sy = 0, st = 0;
+
+    el.addEventListener('touchstart', (e) => {
+      if (!e.touches || e.touches.length !== 1) return;
+      sx = e.touches[0].clientX;
+      sy = e.touches[0].clientY;
+      st = Date.now();
+    }, {passive:true});
+
+    el.addEventListener('touchend', (e) => {
+      const dt = Date.now() - st;
+      if (!dt) return;
+      const t = e.changedTouches && e.changedTouches[0];
+      if (!t) return;
+      const dx = t.clientX - sx;
+      const dy = t.clientY - sy;
+
+      // threshold + mostly horizontal
+      if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy)) return;
+
+      if (dx < 0) { // swipe left => next
+        const next = Math.min(12, currentStep + 1);
+        if (next <= maxStepUnlocked) location.href = `?step=${next}`;
+      } else { // swipe right => prev
+        const prev = Math.max(1, currentStep - 1);
+        if (prev <= maxStepUnlocked) location.href = `?step=${prev}`;
+      }
+    }, {passive:true});
   }
 
   async function main() {
-    const res = await fetch('./clues.json');
-    const clues = await res.json();
+    const [cluesRes, tokensRes] = await Promise.all([
+      fetch('./clues.json'),
+      fetch('./tokens.json')
+    ]);
+    const clues = await cluesRes.json();
+    const tokens = await tokensRes.json();
 
-    const title = document.getElementById('title');
-    const subtitle = document.getElementById('subtitle');
-    const content = document.getElementById('content');
+    updateProgressPill();
 
-    if (!step || step < 1 || step > clues.length) {
-      // keep home state
+    const titleEl = document.getElementById('title');
+    const subtitleEl = document.getElementById('subtitle');
+    const contentEl = document.getElementById('content');
+    const lockedEl = document.getElementById('locked');
+
+    const unlocked = getUnlocked();
+
+    // Home screen
+    if (!step) {
+      const start = Math.max(1, unlocked || 1);
+      titleEl.textContent = "Ready to run? 🐎";
+      subtitleEl.innerHTML = `Scan <b>QR 01</b> to start.` + (unlocked ? ` (You’ve unlocked up to step <b>${unlocked}</b>.)` : "");
+      const homeBtn = document.getElementById('homeBtn');
+      if (homeBtn) homeBtn.href = "./";
+      lockedEl.style.display = "none";
+      contentEl.style.display = "none";
+      document.getElementById('goUnlockedBtn').href = unlocked ? `?step=${unlocked}` : "./";
       return;
+    }
+
+    // Validate step range
+    if (step < 1 || step > clues.length) {
+      titleEl.textContent = "That step doesn’t exist";
+      subtitleEl.textContent = "Check the QR code and try again.";
+      return;
+    }
+
+    // STEP LOCK:
+    // A step is unlockable if:
+    // - step <= unlocked (already unlocked), OR
+    // - step == unlocked + 1 AND token matches
+    const expectedToken = tokens[String(step)];
+    const canUnlockNext = (step === unlocked + 1) && tokenParam && (tokenParam === expectedToken);
+    const isUnlocked = (step <= unlocked) || canUnlockNext || (step === 1 && unlocked === 0 && tokenParam === expectedToken);
+
+    if (!isUnlocked) {
+      // show locked view, send them to last unlocked
+      titleEl.textContent = "Locked 🔒";
+      subtitleEl.textContent = "Scan the correct QR code for this step to unlock it.";
+      contentEl.style.display = "none";
+      lockedEl.style.display = "block";
+      const go = document.getElementById('goUnlockedBtn');
+      go.href = unlocked ? `?step=${unlocked}` : "./";
+      return;
+    }
+
+    // If token is valid for next step, unlock it in localStorage
+    if (canUnlockNext) {
+      setUnlocked(step); // unlock up to this step
+      updateProgressPill();
+    } else if (step === 1 && unlocked === 0 && tokenParam === expectedToken) {
+      setUnlocked(1);
+      updateProgressPill();
     }
 
     const clue = clues[step - 1];
 
+    // Fill content
     document.getElementById('clueTitle').textContent = `Step ${clue.id} of ${clues.length} — ${clue.title}`;
     document.getElementById('clueText').textContent = clue.text;
+
+    // art
+    const artBox = document.getElementById('artBox');
+    artBox.innerHTML = artSvg(clue.art) + `<div class="cap">Swipe left/right • Lunar New Year theme</div>`;
 
     // examples
     const exWrap = document.getElementById('examples');
@@ -191,28 +497,32 @@
       proofBox.style.display = "none";
     }
 
-    // nav
-    const prev = step > 1 ? step - 1 : 1;
-    const next = step < clues.length ? step + 1 : clues.length;
+    // nav (only allow navigating within unlocked steps)
+    const maxUnlockedNow = getUnlocked();
+    const prev = Math.max(1, step - 1);
+    const next = Math.min(clues.length, step + 1);
 
-    setLink(document.getElementById('prevBtn'), prev);
-    setLink(document.getElementById('nextBtn'), next);
+    setLink(document.getElementById('prevBtn'), prev, null);
+    setLink(document.getElementById('nextBtn'), (next <= maxUnlockedNow ? next : step), null);
 
-    // header
-    title.textContent = "Clue unlocked ✅";
-    subtitle.textContent = "Don’t overthink it — keep it fun.";
+    // header text
+    titleEl.textContent = "Clue unlocked ✅";
+    subtitleEl.textContent = "Keep it fun — no pressure.";
 
-    content.style.display = "block";
+    contentEl.style.display = "block";
+    lockedEl.style.display = "none";
 
     const footer = document.getElementById('footer');
     footer.textContent = step === clues.length
       ? "🎉 Gong Xi Fa Cai! Head to the celebration spot."
-      : "Find the next QR code and scan it to continue.";
+      : "Find the next QR code and scan it to unlock the next step.";
+
+    enableSwipe(step, maxUnlockedNow);
   }
 
   main().catch(err => {
-    document.getElementById('title').textContent = "Couldn’t load clues";
-    document.getElementById('subtitle').textContent = "Host note: ensure clues.json sits next to index.html.";
+    document.getElementById('title').textContent = "Couldn’t load hunt files";
+    document.getElementById('subtitle').textContent = "Host note: ensure clues.json and tokens.json sit next to index.html.";
     console.error(err);
   });
 </script>
