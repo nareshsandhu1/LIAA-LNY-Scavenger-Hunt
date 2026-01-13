@@ -9,7 +9,8 @@
       "Running shoes"
     ],
     "proof": "Take a photo.",
-    "art": "horse"
+    "art": "horse",
+    "next_floor": "Head to Floor 2"
   },
   {
     "id": 2,
@@ -21,7 +22,8 @@
       "Red badge lanyard"
     ],
     "proof": "Take a photo.",
-    "art": "hongbao"
+    "art": "hongbao",
+    "next_floor": "Head to Floor 3"
   },
   {
     "id": 3,
@@ -33,7 +35,8 @@
       "Kettle"
     ],
     "proof": "Take a photo.",
-    "art": "firecracker"
+    "art": "firecracker",
+    "next_floor": "Head to Floor 4"
   },
   {
     "id": 4,
@@ -45,7 +48,8 @@
       "Balance"
     ],
     "proof": "Typed word or chat screenshot.",
-    "art": "lantern"
+    "art": "lantern",
+    "next_floor": "Head to Floor 5"
   },
   {
     "id": 5,
@@ -58,7 +62,8 @@
       "Jewellery"
     ],
     "proof": "Take a photo.",
-    "art": "gold"
+    "art": "gold",
+    "next_floor": "Head to Floor 6"
   },
   {
     "id": 6,
@@ -70,7 +75,8 @@
       "Kitchen"
     ],
     "proof": "Take a photo.",
-    "art": "knot"
+    "art": "knot",
+    "next_floor": "Head to Floor G"
   },
   {
     "id": 7,
@@ -81,7 +87,8 @@
       "Quiet room"
     ],
     "proof": "Take a photo.",
-    "art": "plum"
+    "art": "plum",
+    "next_floor": "Head to Floor 2"
   },
   {
     "id": 8,
@@ -93,7 +100,8 @@
       "Tea station"
     ],
     "proof": "Take a photo.",
-    "art": "mandarin"
+    "art": "mandarin",
+    "next_floor": "Head to Floor 3"
   },
   {
     "id": 9,
@@ -103,7 +111,8 @@
       "Write their name down (selfie optional)"
     ],
     "proof": "Write the name (selfie optional).",
-    "art": "mahjong"
+    "art": "mahjong",
+    "next_floor": "Head to Floor 4"
   },
   {
     "id": 10,
@@ -115,7 +124,8 @@
       "Lounge corner"
     ],
     "proof": "Group photo.",
-    "art": "dragon"
+    "art": "dragon",
+    "next_floor": "Head to Floor 5"
   },
   {
     "id": 11,
@@ -127,7 +137,8 @@
       "Adventure"
     ],
     "proof": "Just for fun — no wrong answers.",
-    "art": "moon"
+    "art": "moon",
+    "next_floor": "Head to Floor G"
   },
   {
     "id": 12,
@@ -137,6 +148,7 @@
       "No task — just food, fortune, and fun 🧧"
     ],
     "proof": "",
-    "art": "celebrate"
+    "art": "celebrate",
+    "next_floor": "This is the final stop 🎉"
   }
 ]

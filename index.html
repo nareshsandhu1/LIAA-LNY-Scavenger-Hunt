@@ -97,9 +97,7 @@
       gap: 16px;
       align-items: start;
     }
-    @media (max-width: 720px) {
-      .grid { grid-template-columns: 1fr; }
-    }
+    @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
     .art {
       border: 1px solid var(--line);
       border-radius: 18px;
@@ -175,6 +173,30 @@
       color: rgba(148,163,184,.95);
       margin-top: 10px;
     }
+    .reveal {
+      margin-top: 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(245,158,11,.28);
+      background: rgba(245,158,11,.08);
+      overflow: hidden;
+    }
+    .reveal .head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px 14px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .reveal .head b { font-weight: 750; }
+    .reveal .body {
+      display: none;
+      padding: 0 14px 14px;
+      color: rgba(229,231,235,.95);
+    }
+    .reveal.open .body { display: block; }
+    .chev { opacity: .9; }
   </style>
 </head>
 <body>
@@ -187,7 +209,7 @@
     <section class="card" id="swipeArea" aria-label="Clue card. Swipe left/right to navigate.">
       <div class="inner">
         <h1 id="title">Ready to run? 🐎</h1>
-        <p class="muted" id="subtitle">Scan QR 01 to start — or open <code>?step=1&k=...</code></p>
+        <p class="muted" id="subtitle">Scan QR 01 to start.</p>
 
         <div id="content" style="display:none;">
           <div class="grid">
@@ -201,6 +223,17 @@
 
               <div class="proof" id="proofBox" style="display:none;">
                 <p class="small"><b>Proof:</b> <span id="proofText"></span></p>
+              </div>
+
+              <!-- Dramatic reveal: next floor -->
+              <div class="reveal" id="floorReveal" style="display:none;">
+                <div class="head" id="revealHead" role="button" aria-expanded="false" tabindex="0">
+                  <div>🎭 <b>Reveal where to go next</b></div>
+                  <div class="chev" id="chev">▾</div>
+                </div>
+                <div class="body" id="revealBody">
+                  <p style="margin: 0;"><span id="nextFloorText"></span></p>
+                </div>
               </div>
 
               <div class="nav">
@@ -220,7 +253,6 @@
           <div class="lockbox">
             <p><b>🔒 This step is locked.</b></p>
             <p class="muted">To unlock it, you need to scan the correct QR code for this step.</p>
-            <p class="small">If you’re hosting: each QR should include <code>?step=N&k=TOKEN</code> (token is unique per step).</p>
           </div>
           <div class="nav">
             <a class="btn primary" id="goUnlockedBtn" href="./">Go to last unlocked</a>
@@ -228,7 +260,7 @@
         </div>
 
         <div class="footer">
-          Host note: Step locking is enabled. Don’t share tokens publicly unless you want people to skip ahead.
+          Host note: Step locking is enabled. Tokens prevent skipping ahead.
         </div>
       </div>
     </section>
@@ -241,6 +273,7 @@
   const step = stepParam ? parseInt(stepParam, 10) : null;
 
   const STORAGE_KEY = "lny_horse_hunt_unlocked_v1";
+  const REVEAL_KEY = (n) => `lny_horse_reveal_${n}`;
 
   function getUnlocked() {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -251,14 +284,49 @@
     localStorage.setItem(STORAGE_KEY, String(Math.max(0, Math.min(12, n))));
   }
 
-  function setLink(el, stepVal, token) {
+  function setLink(el, stepVal) {
     if (!el) return;
-    if (!stepVal) { el.href = `./`; return; }
-    el.href = token ? `?step=${stepVal}&k=${encodeURIComponent(token)}` : `?step=${stepVal}`;
+    el.href = stepVal ? `?step=${stepVal}` : `./`;
+  }
+
+  function updateProgressPill() {
+    const unlocked = getUnlocked();
+    document.getElementById('unlockedCount').textContent = unlocked;
+  }
+
+  // Swipe gestures (left=next, right=prev) for unlocked steps
+  function enableSwipe(currentStep, maxStepUnlocked) {
+    const el = document.getElementById('swipeArea');
+    let sx = 0, sy = 0, st = 0;
+
+    el.addEventListener('touchstart', (e) => {
+      if (!e.touches || e.touches.length !== 1) return;
+      sx = e.touches[0].clientX;
+      sy = e.touches[0].clientY;
+      st = Date.now();
+    }, {passive:true});
+
+    el.addEventListener('touchend', (e) => {
+      const dt = Date.now() - st;
+      if (!dt) return;
+      const t = e.changedTouches && e.changedTouches[0];
+      if (!t) return;
+      const dx = t.clientX - sx;
+      const dy = t.clientY - sy;
+
+      if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy)) return;
+
+      if (dx < 0) { // swipe left => next
+        const next = Math.min(12, currentStep + 1);
+        if (next <= maxStepUnlocked) location.href = `?step=${next}`;
+      } else { // swipe right => prev
+        const prev = Math.max(1, currentStep - 1);
+        if (prev <= maxStepUnlocked) location.href = `?step=${prev}`;
+      }
+    }, {passive:true});
   }
 
   function artSvg(kind) {
-    // Lightweight inline "pics" (SVG illustrations) so no external image hosting is needed.
     const common = (inner) => `
       <svg viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${kind} illustration">
         <defs>
@@ -357,49 +425,13 @@
     return svgs[kind] || svgs.lantern;
   }
 
-  function updateProgressPill() {
-    const unlocked = getUnlocked();
-    document.getElementById('unlockedCount').textContent = unlocked;
-  }
-
-  function goToStep(n) {
-    const unlocked = getUnlocked();
-    const target = Math.max(1, Math.min(12, n));
-    const allowed = Math.min(target, unlocked || 1);
-    location.href = allowed === 0 ? "./" : `?step=${allowed}`;
-  }
-
-  // Swipe gestures (left=next, right=prev) for unlocked steps
-  function enableSwipe(currentStep, maxStepUnlocked) {
-    const el = document.getElementById('swipeArea');
-    let sx = 0, sy = 0, st = 0;
-
-    el.addEventListener('touchstart', (e) => {
-      if (!e.touches || e.touches.length !== 1) return;
-      sx = e.touches[0].clientX;
-      sy = e.touches[0].clientY;
-      st = Date.now();
-    }, {passive:true});
-
-    el.addEventListener('touchend', (e) => {
-      const dt = Date.now() - st;
-      if (!dt) return;
-      const t = e.changedTouches && e.changedTouches[0];
-      if (!t) return;
-      const dx = t.clientX - sx;
-      const dy = t.clientY - sy;
-
-      // threshold + mostly horizontal
-      if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy)) return;
-
-      if (dx < 0) { // swipe left => next
-        const next = Math.min(12, currentStep + 1);
-        if (next <= maxStepUnlocked) location.href = `?step=${next}`;
-      } else { // swipe right => prev
-        const prev = Math.max(1, currentStep - 1);
-        if (prev <= maxStepUnlocked) location.href = `?step=${prev}`;
-      }
-    }, {passive:true});
+  function toggleReveal(stepNum) {
+    const box = document.getElementById('floorReveal');
+    const head = document.getElementById('revealHead');
+    const open = box.classList.toggle('open');
+    head.setAttribute('aria-expanded', open ? 'true' : 'false');
+    document.getElementById('chev').textContent = open ? '▴' : '▾';
+    localStorage.setItem(REVEAL_KEY(stepNum), open ? '1' : '0');
   }
 
   async function main() {
@@ -419,15 +451,12 @@
 
     const unlocked = getUnlocked();
 
-    // Home screen
+    // HOME: tell everyone where QR 01 is (Floor 6)
     if (!step) {
-      const start = Math.max(1, unlocked || 1);
       titleEl.textContent = "Ready to run? 🐎";
-      subtitleEl.innerHTML = `Scan <b>QR 01</b> to start.` + (unlocked ? ` (You’ve unlocked up to step <b>${unlocked}</b>.)` : "");
-      const homeBtn = document.getElementById('homeBtn');
-      if (homeBtn) homeBtn.href = "./";
-      lockedEl.style.display = "none";
+      subtitleEl.innerHTML = "🎯 Start point: <b>QR 01 is on Floor 6</b>. Scan it to begin.";
       contentEl.style.display = "none";
+      lockedEl.style.display = "none";
       document.getElementById('goUnlockedBtn').href = unlocked ? `?step=${unlocked}` : "./";
       return;
     }
@@ -440,15 +469,11 @@
     }
 
     // STEP LOCK:
-    // A step is unlockable if:
-    // - step <= unlocked (already unlocked), OR
-    // - step == unlocked + 1 AND token matches
     const expectedToken = tokens[String(step)];
     const canUnlockNext = (step === unlocked + 1) && tokenParam && (tokenParam === expectedToken);
     const isUnlocked = (step <= unlocked) || canUnlockNext || (step === 1 && unlocked === 0 && tokenParam === expectedToken);
 
     if (!isUnlocked) {
-      // show locked view, send them to last unlocked
       titleEl.textContent = "Locked 🔒";
       subtitleEl.textContent = "Scan the correct QR code for this step to unlock it.";
       contentEl.style.display = "none";
@@ -458,9 +483,8 @@
       return;
     }
 
-    // If token is valid for next step, unlock it in localStorage
     if (canUnlockNext) {
-      setUnlocked(step); // unlock up to this step
+      setUnlocked(step);
       updateProgressPill();
     } else if (step === 1 && unlocked === 0 && tokenParam === expectedToken) {
       setUnlocked(1);
@@ -469,15 +493,12 @@
 
     const clue = clues[step - 1];
 
-    // Fill content
     document.getElementById('clueTitle').textContent = `Step ${clue.id} of ${clues.length} — ${clue.title}`;
     document.getElementById('clueText').textContent = clue.text;
 
-    // art
     const artBox = document.getElementById('artBox');
     artBox.innerHTML = artSvg(clue.art) + `<div class="cap">Swipe left/right • Lunar New Year theme</div>`;
 
-    // examples
     const exWrap = document.getElementById('examples');
     exWrap.innerHTML = "";
     (clue.examples || []).forEach(e => {
@@ -487,7 +508,6 @@
       exWrap.appendChild(pill);
     });
 
-    // proof
     const proofBox = document.getElementById('proofBox');
     const proofText = document.getElementById('proofText');
     if (clue.proof && clue.proof.trim().length) {
@@ -497,17 +517,31 @@
       proofBox.style.display = "none";
     }
 
-    // nav (only allow navigating within unlocked steps)
+    // Dramatic reveal next floor (hidden until toggled)
+    const fr = document.getElementById('floorReveal');
+    const nft = document.getElementById('nextFloorText');
+    nft.textContent = clue.next_floor || "";
+    fr.style.display = (clue.next_floor && clue.next_floor.length) ? "block" : "none";
+
+    const boxOpen = localStorage.getItem(REVEAL_KEY(step)) === '1';
+    fr.classList.toggle('open', boxOpen);
+    document.getElementById('revealHead').setAttribute('aria-expanded', boxOpen ? 'true' : 'false');
+    document.getElementById('chev').textContent = boxOpen ? '▴' : '▾';
+
+    const head = document.getElementById('revealHead');
+    head.onclick = () => toggleReveal(step);
+    head.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') toggleReveal(step); };
+
+    // nav within unlocked
     const maxUnlockedNow = getUnlocked();
     const prev = Math.max(1, step - 1);
     const next = Math.min(clues.length, step + 1);
 
-    setLink(document.getElementById('prevBtn'), prev, null);
-    setLink(document.getElementById('nextBtn'), (next <= maxUnlockedNow ? next : step), null);
+    setLink(document.getElementById('prevBtn'), prev);
+    setLink(document.getElementById('nextBtn'), (next <= maxUnlockedNow ? next : step));
 
-    // header text
     titleEl.textContent = "Clue unlocked ✅";
-    subtitleEl.textContent = "Keep it fun — no pressure.";
+    subtitleEl.textContent = "Read the clue first… then reveal where to go next 🎭";
 
     contentEl.style.display = "block";
     lockedEl.style.display = "none";
@@ -515,7 +549,7 @@
     const footer = document.getElementById('footer');
     footer.textContent = step === clues.length
       ? "🎉 Gong Xi Fa Cai! Head to the celebration spot."
-      : "Find the next QR code and scan it to unlock the next step.";
+      : "Scan the next QR code to unlock the next step.";
 
     enableSwipe(step, maxUnlockedNow);
   }
